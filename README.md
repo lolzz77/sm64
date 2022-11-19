@@ -17,7 +17,7 @@ A prior copy of the game is required to extract the assets.
 
 1. Install prerequisites: `sudo apt install -y build-essential git binutils-mips-linux-gnu python3`
 2. Clone the repo from within Linux: `git clone https://github.com/n64decomp/sm64.git`
-3. Place a Super Mario 64 ROM called `baserom.<VERSION>.z64` into the project folder for asset extraction, where `VERSION` can be `us`, `jp`, `eu`, or `sh`.
+3. Place a Super Mario 64 ROM (Download online), rename it to `baserom.<VERSION>.z64` into the project folder for asset extraction, where `VERSION` can be `us`, `jp`, `eu`, or `sh`.
 4. Run `make` to build. Qualify the version through `make VERSION=<VERSION>`. Add `-j4` to improve build speed (hardware dependent).
 
 Ensure the repo path length does not exceed 255 characters. Long path names result in build errors.
@@ -132,6 +132,7 @@ gmake VERSION=jp -j4       # build (J) version instead with 4 jobs
 #### Create Docker image
 
 After installing and starting Docker, create the docker image. This only needs to be done once.
+In terminal, cd into this folder, then run command
 ```
 docker build -t sm64 .
 ```
@@ -140,15 +141,18 @@ docker build -t sm64 .
 
 To build, mount the local filesystem into the Docker container and build the ROM with `docker run sm64 make`.
 
+##### Linux example for (U):
+For a Linux host, Docker needs to be instructed which user should own the output files:
+If you're root user, no need `--user $UID:$GID`
+For "$(pwd)", it has to be absolute path, put example like "C:/Users/User/Documents/project/SuperMario/sm64-master"
+`-j4` command is not necessary, it boost build time & is hardware dependent 
+```
+docker run --rm --mount type=bind,source="$(pwd)",destination=/sm64 --user $UID:$GID sm64 make VERSION=us -j4
+```
+
 ##### macOS example for (U):
 ```
 docker run --rm --mount type=bind,source="$(pwd)",destination=/sm64 sm64 make VERSION=us -j4
-```
-
-##### Linux example for (U):
-For a Linux host, Docker needs to be instructed which user should own the output files:
-```
-docker run --rm --mount type=bind,source="$(pwd)",destination=/sm64 --user $UID:$GID sm64 make VERSION=us -j4
 ```
 
 Resulting artifacts can be found in the `build` directory.
