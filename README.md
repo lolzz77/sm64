@@ -53,7 +53,7 @@ Dependency installation instructions for common Linux distros are provided below
 ##### Debian / Ubuntu
 To install build dependencies:
 ```
-sudo apt install -y binutils-mips-linux-gnu build-essential git libcapstone-dev pkgconf python3
+sudo apt install -y binutils-mips-linux-gnu build-essential git libcapstone-dev pkgconf python3 bsdmainutils
 ```
 
 ##### Arch Linux
